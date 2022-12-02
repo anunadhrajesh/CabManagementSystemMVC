@@ -17,6 +17,8 @@
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        public UserType UserTypes { get; set; }
+
         [Required]
         [StringLength(25)]
         [Display(Name = "Password")]
