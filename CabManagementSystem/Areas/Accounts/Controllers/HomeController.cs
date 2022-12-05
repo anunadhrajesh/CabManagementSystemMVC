@@ -49,7 +49,17 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             if (res.Succeeded)
             {
                 //return RedirectToAction("Index", "Home", new {Area=""});
-                return Redirect("/");
+                //return Redirect("/");
+                {
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Index", "User", new { Area = "Admin" });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home", new { Area = "" });
+                    }
+                }
             }
             return View(model);
         }
@@ -140,6 +150,30 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             }
             return Ok("Data generated");
         }
+
+
+        public async Task<IActionResult> UserHome()
+        {
+            var signeduser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByEmailAsync(signeduser.Email);
+
+
+
+            return View(new RegisterViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            });
+        }
+
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
 
     }
 }

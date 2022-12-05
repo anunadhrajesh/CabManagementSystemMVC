@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\CabDriver\Controllers\" />
+    <Folder Include="Areas\CabDriver\Models\" />
     <Folder Include="Areas\CabDriver\Views\" />
   </ItemGroup>
 
