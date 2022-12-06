@@ -83,7 +83,7 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
                 return View(model);
             }
 
-            var user = new ApplicationUser
+            var user = new ApplicationUser()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -91,34 +91,16 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
                 UserName = Guid.NewGuid().ToString().Replace("-", "")
             };
 
+            var role = Convert.ToString(model.UserTypes);
+
             var res = await _userManager.CreateAsync(user, model.Password);
 
+            await _userManager.AddToRoleAsync(user, role);
+
             if (res.Succeeded)
-            //{
-                //if (user.is)
-                //{
-                //    return RedirectToAction("Index", "User", new {Area="Admin"});
-
-                //}
-                //else
-                //{
-                //    return RedirectToAction("Login", "Home", new {Area=""});
-
-
-                //}
-
-
-               // var Task<bool> role = _userManager.GetRolesAsync(user,"Admin");
-
-                //foreach (var role in roles)
-                //{
-                //    if (role == "Admin")
-                //    {
-                //        return RedirectToAction("Index", "User", new { Area = "Admin" });
-                //    }
-                //}
-            //}
-
+            {
+                return RedirectToAction(nameof(Login));
+            }
             ModelState.AddModelError("", "An Error Occoured");
             return View(model);
         }
@@ -132,8 +114,8 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
         public async Task<IActionResult> GenerateData()
         {
             await _roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-            await _roleManager.CreateAsync(new IdentityRole() { Name = "CabDriver" });
+            await _roleManager.CreateAsync(new IdentityRole() { Name = "Cab_User" });
+            await _roleManager.CreateAsync(new IdentityRole() { Name = "Cab_Driver" });
 
             var users = await _userManager.GetUsersInRoleAsync("Admin");
             if (users.Count == 0)
@@ -151,15 +133,13 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             return Ok("Data generated");
         }
 
-
-        public async Task<IActionResult> UserHome()
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
         {
             var signeduser = await _userManager.GetUserAsync(User);
             var user = await _userManager.FindByEmailAsync(signeduser.Email);
-
-
-
-            return View(new RegisterViewModel()
+           
+            return View(new EditViewModel()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -167,13 +147,18 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             });
         }
 
-
-        [HttpGet]
-        public IActionResult Index()
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditViewModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+                return View(model);
+            var signeduser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByEmailAsync(signeduser.Email);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction(nameof(EditProfile));
         }
-
-
     }
 }

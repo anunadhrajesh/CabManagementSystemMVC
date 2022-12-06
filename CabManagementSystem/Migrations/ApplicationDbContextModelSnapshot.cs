@@ -240,9 +240,6 @@ namespace CabManagementSystem.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("UserTypes")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 

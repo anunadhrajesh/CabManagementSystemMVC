@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CabManagementSystem.Migrations
 {
-    public partial class CreateAccountsTable : Migration
+    public partial class CreateUserTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

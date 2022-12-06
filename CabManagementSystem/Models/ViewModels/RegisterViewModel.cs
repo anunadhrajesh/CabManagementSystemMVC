@@ -1,5 +1,10 @@
 ﻿namespace CabManagementSystem.Models.ViewModels
 {
+    public enum UserType
+    {
+        Cab_Driver,
+        Cab_User
+    }
     public class RegisterViewModel
     {
         [Required]
