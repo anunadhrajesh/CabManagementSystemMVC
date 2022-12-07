@@ -55,9 +55,13 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
                     {
                         return RedirectToAction("Index", "User", new { Area = "Admin" });
                     }
+                    else if(await _userManager.IsInRoleAsync(user, "Cab_Driver"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                     else
                     {
-                        return RedirectToAction("Index", "Home", new { Area = "" });
+                        return RedirectToAction("Index", "Home", new { Area = "Accounts" });
                     }
                 }
             }
@@ -159,6 +163,36 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             user.Email = model.Email;
             await _userManager.UpdateAsync(user);
             return RedirectToAction(nameof(EditProfile));
+        }
+        
+        //[Route("Booking")]
+        [HttpGet]
+        public IActionResult Booking()
+        {
+            return View();
+        }
+
+       // [Route("Booking")]
+        [HttpPost]
+        public async Task<IActionResult> Booking(BookingViewModel model)
+        {
+            if (model.From == model.To)
+            {
+                ModelState.AddModelError(nameof(model.To), "Invalid destination");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _db.Bookings.Add(new Booking()
+            {
+                To = model.To,
+                From = model.From,
+                Date = model.Date,
+
+            });
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
         }
     }
 }
