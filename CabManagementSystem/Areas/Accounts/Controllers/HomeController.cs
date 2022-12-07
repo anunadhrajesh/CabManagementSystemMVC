@@ -25,6 +25,11 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             _roleManager = roleManager;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -57,11 +62,12 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
                     }
                     else if(await _userManager.IsInRoleAsync(user, "Cab_Driver"))
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Driver", new { Area = "CabDriver" });
                     }
                     else
                     {
                         return RedirectToAction("Index", "Home", new { Area = "Accounts" });
+
                     }
                 }
             }
@@ -103,8 +109,16 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
 
             if (res.Succeeded)
             {
-                return RedirectToAction(nameof(Login));
-            }
+                //return RedirectToAction("Index", "Home", new {Area=""});
+                    if (await _userManager.IsInRoleAsync(user, "Cab_Driver"))
+                    {
+                        return RedirectToAction("DriverDetails", "Driver", new {Area = "CabDriver", id=user.Id});
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Home", new { Area = "Accounts" });
+                    }
+                }
             ModelState.AddModelError("", "An Error Occoured");
             return View(model);
         }

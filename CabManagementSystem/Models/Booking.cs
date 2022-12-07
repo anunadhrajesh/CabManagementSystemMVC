@@ -2,7 +2,7 @@
 
 namespace CabManagementSystem.Models
 {
-    public enum CarModel
+    public enum CarModels
     {
         Auto,
         Sedan,
@@ -45,6 +45,6 @@ namespace CabManagementSystem.Models
         public Location To { get; set; }
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
-        public CarModel CarModel { get; set; }
+        public CarModels CarModel { get; set; }
     }
 }

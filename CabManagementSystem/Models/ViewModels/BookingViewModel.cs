@@ -13,6 +13,6 @@
             public Location To { get; set; }
             [Required]
             public DateTime Date { get; set; }
-            public CarModel CarModel { get; set; }
+            public CarModels CarModel { get; set; }
     }
 }
