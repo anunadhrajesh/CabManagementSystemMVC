@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CabManagementSystem.Migrations
 {
-    public partial class CreateBookingTables : Migration
+    public partial class CreateBookingTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -46,5 +46,15 @@ namespace CabManagementSystem.Models
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
         public CarModels CarModel { get; set; }
+
+        public ApplicationUser User { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+
+
+        public DriverDetails? Driver { get; set; }
+        [ForeignKey(nameof(Driver))]
+        public int? DriverId { get; set; }
+
     }
 }

@@ -22,8 +22,8 @@
 
         public CarModels CarModel { get; set; }
 
-        public ApplicationUser CabDriver { get; set; }
-    [   ForeignKey(nameof(CabDriver))]
+        public ApplicationUser Driver { get; set; }
+        [ForeignKey(nameof(Driver))]
         public string DriverId { get; set; }
-}
+    }
 }

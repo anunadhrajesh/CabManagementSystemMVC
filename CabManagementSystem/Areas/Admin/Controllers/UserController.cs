@@ -50,8 +50,8 @@ namespace CabManagementSystem.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _db.ApplicationUsers.FindAsync(id);
-            if (user == null)
-                return NotFound();
+            //if (user == null)
+            //    return NotFound();
 
             return View(new ApplicationUser()
             {
@@ -62,11 +62,11 @@ namespace CabManagementSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, ApplicationUser model)
+        public async Task<IActionResult> Edit(string id, EditViewModel model)
         {
             var user = await _db.ApplicationUsers.FindAsync(id);
-            if (user == null)
-                return NotFound();
+            //if (user == null)
+            //    return NotFound();
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -74,19 +74,26 @@ namespace CabManagementSystem.Areas.Admin.Controllers
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Email = model.Email;
-            await _db.SaveChangesAsync();
+            _db.ApplicationUsers.Update(user);
+            _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _db.ApplicationUsers.FindAsync(id);
-            if (user == null)
-                return NotFound();
+            //if (user == null)
+            //    return NotFound();
 
             _db.ApplicationUsers.Remove(user);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public IActionResult ViewDetails()
+        {
+            return View(_db.Bookings.ToList());
         }
     }
 }

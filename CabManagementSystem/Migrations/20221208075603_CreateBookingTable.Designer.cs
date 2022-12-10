@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221207070526_CreateDriverDetailsTable")]
-    partial class CreateDriverDetailsTable
+    [Migration("20221208075603_CreateBookingTable")]
+    partial class CreateBookingTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,43 +47,6 @@ namespace CabManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CabName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DriverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LicenceNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RegistrationNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
-
-                    b.HasIndex("LicenceNo")
-                        .IsUnique();
-
-                    b.HasIndex("RegistrationNo")
-                        .IsUnique();
-
-                    b.ToTable("DriverDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -305,17 +268,6 @@ namespace CabManagementSystem.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
-                {
-                    b.HasOne("CabManagementSystem.Models.ApplicationUser", "CabDriver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CabDriver");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

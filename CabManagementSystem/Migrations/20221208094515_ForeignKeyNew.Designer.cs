@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221206152228_CreateBookingTables")]
-    partial class CreateBookingTables
+    [Migration("20221208094515_ForeignKeyNew")]
+    partial class ForeignKeyNew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,15 +38,66 @@ namespace CabManagementSystem.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
                     b.Property<int>("From")
                         .HasColumnType("int");
 
                     b.Property<int>("To")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CabName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CarModel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DriverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LicenceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RegistrationNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("LicenceNo")
+                        .IsUnique();
+
+                    b.HasIndex("RegistrationNo")
+                        .IsUnique();
+
+                    b.ToTable("DriverDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -270,6 +321,34 @@ namespace CabManagementSystem.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
+            modelBuilder.Entity("CabManagementSystem.Models.Booking", b =>
+                {
+                    b.HasOne("CabManagementSystem.Models.DriverDetails", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId");
+
+                    b.HasOne("CabManagementSystem.Models.ApplicationUser", "User")
+                        .WithMany("BookingCabs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
+                {
+                    b.HasOne("CabManagementSystem.Models.ApplicationUser", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -319,6 +398,11 @@ namespace CabManagementSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CabManagementSystem.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("BookingCabs");
                 });
 #pragma warning restore 612, 618
         }

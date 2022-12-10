@@ -60,7 +60,7 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
                     {
                         return RedirectToAction("Index", "User", new { Area = "Admin" });
                     }
-                    else if(await _userManager.IsInRoleAsync(user, "Cab_Driver"))
+                    else if (await _userManager.IsInRoleAsync(user, "Cab_Driver"))
                     {
                         return RedirectToAction("Index", "Driver", new { Area = "CabDriver" });
                     }
@@ -110,15 +110,15 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             if (res.Succeeded)
             {
                 //return RedirectToAction("Index", "Home", new {Area=""});
-                    if (await _userManager.IsInRoleAsync(user, "Cab_Driver"))
-                    {
-                        return RedirectToAction("DriverDetails", "Driver", new {Area = "CabDriver", id=user.Id});
-                    }
-                    else
-                    {
-                        return RedirectToAction("Login", "Home", new { Area = "Accounts" });
-                    }
+                if (await _userManager.IsInRoleAsync(user, "Cab_Driver"))
+                {
+                    return RedirectToAction("DriverDetails", "Driver", new { Area = "CabDriver", id = user.Id });
                 }
+                else
+                {
+                    return RedirectToAction("Login", "Home", new { Area = "Accounts" });
+                }
+            }
             ModelState.AddModelError("", "An Error Occoured");
             return View(model);
         }
@@ -126,7 +126,7 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home", new {Area=""});
+            return RedirectToAction("Index", "Home", new { Area = "" });
         }
 
         public async Task<IActionResult> GenerateData()
@@ -156,7 +156,7 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
         {
             var signeduser = await _userManager.GetUserAsync(User);
             var user = await _userManager.FindByEmailAsync(signeduser.Email);
-           
+
             return View(new EditViewModel()
             {
                 FirstName = user.FirstName,
@@ -178,15 +178,15 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             await _userManager.UpdateAsync(user);
             return RedirectToAction(nameof(EditProfile));
         }
-        
-        //[Route("Booking")]
+
+        [Route("Booking")]
         [HttpGet]
         public IActionResult Booking()
         {
             return View();
         }
 
-       // [Route("Booking")]
+        [Route("Booking")]
         [HttpPost]
         public async Task<IActionResult> Booking(BookingViewModel model)
         {
@@ -198,15 +198,65 @@ namespace CabManagementSystem.Areas.Accounts.Controllers
             {
                 return View(model);
             }
-            _db.Bookings.Add(new Booking()
+            var user = await _userManager.GetUserAsync(User);
+            var booking = new Booking()
             {
                 To = model.To,
                 From = model.From,
                 Date = model.Date,
+                CarModel =model.CarModel,
+                UserId = await _userManager.GetUserIdAsync(user)
+            };
+            await _db.AddAsync(booking);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Payment", "Home", new { Area = "Accounts" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Payment()
+        {
+            var signeduser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByEmailAsync(signeduser.Email);
+
+
+            return View(new PaymentViewModel()
+
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            });
+
+
+        }
+
+
+
+
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> Invoice()
+        {
+            var signeduser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByEmailAsync(signeduser.Email);
+
+            return View(new PaymentViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
 
             });
-            await _db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home", new { Area = "" });
         }
+
+
+
+
+
+
     }
 }
+

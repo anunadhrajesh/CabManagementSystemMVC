@@ -33,7 +33,7 @@
 
 
 
-<section class="vh-100">
+@*<section class="vh-100">
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
@@ -60,4 +60,60 @@
             </div>
         </div>
     </div>
+</section>*@
+
+
+
+
+
+
+
+
+<!-- Section: Design Block -->
+<section class="">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+        <div class="container">
+            <div class="row gx-lg-5 align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="my-5 display-3 fw-bold ls-tight">
+                        The best offers <br />
+                        <span class="text-primary">for your RIDE</span>
+                    </h1>
+                    <p style="color: hsl(217, 10%, 50.8%)">
+                        Our Travel Specialists Are Ready to Assist You with Your Daily Rides.
+                        Contact Us Now. Let Us Help You Create an Amazing Trips.
+                        Contact Us or Come to Us Today.
+                    </p>
+                </div>
+
+
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <form method="post">
+                                <div>
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <label asp-for="Password"></label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="d-grid mt-4">
+                                    <button class="btn btn-primary">Login</button>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Jumbotron -->
 </section>
+<!-- Section: Design Block -->

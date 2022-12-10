@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221205115922_CreateUserTable")]
-    partial class CreateUserTable
+    [Migration("20221208075728_CreateDriverDetailsTable")]
+    partial class CreateDriverDetailsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,71 @@ namespace CabManagementSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CabManagementSystem.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarModel")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("From")
+                        .HasColumnType("int");
+
+                    b.Property<int>("To")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CabName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CarModel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DriverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LicenceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RegistrationNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("LicenceNo")
+                        .IsUnique();
+
+                    b.HasIndex("RegistrationNo")
+                        .IsUnique();
+
+                    b.ToTable("DriverDetails");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -243,6 +308,17 @@ namespace CabManagementSystem.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("CabManagementSystem.Models.DriverDetails", b =>
+                {
+                    b.HasOne("CabManagementSystem.Models.ApplicationUser", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

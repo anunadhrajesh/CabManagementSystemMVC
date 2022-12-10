@@ -22,7 +22,7 @@
 
 
 
-    <div class="one">
+@*    <div class="one">
     <h1>CAB MANAGEMENT SYSTEM</h1>
   </div>
 
@@ -78,4 +78,84 @@
         </div>
       </div>
     </div> 
-  </section>
+  </section>*@
+
+
+
+
+
+
+
+
+
+<!-- Section: Design Block -->
+<section class="">
+  <!-- Jumbotron -->
+  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+    <div class="container">
+      <div class="row gx-lg-5 align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1 class="my-5 display-3 fw-bold ls-tight">
+            Register for the best offers <br />
+            <span class="text-primary">for your rides</span>
+          </h1>
+          <p style="color: hsl(217, 10%, 50.8%)">
+                        Our Travel Specialists Are Ready to Assist You with Your Daily Rides.
+                        Contact Us Now. Let Us Help You Create an Amazing Trips.
+                        Contact Us or Come to Us Today.
+          </p>
+        </div>
+
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="card">
+            <div class="card-body py-5 px-md-5">
+                            <form method="post">
+
+                                <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="FirstName"></label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="LastName"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div>
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <label asp-for="UserTypes"></label>
+                                    <select asp-for="UserTypes"
+                                            asp-items="@Html.GetEnumSelectList<UserType>()" class="form-control">
+                                        <option>Select User Type</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label asp-for="Password"></label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <label asp-for="ConfirmPassword"></label>
+                                    <input asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="d-grid mt-4">
+                                    <button class="btn btn-primary">Register</button>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                </div>
+                            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->

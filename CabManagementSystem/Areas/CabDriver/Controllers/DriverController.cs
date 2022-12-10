@@ -45,5 +45,12 @@ namespace CabManagementSystem.Areas.CabDriver.Controllers
             await _db.SaveChangesAsync();
             return Redirect("/");
         }
+
+
+
+        public IActionResult ViewDetails()
+        {
+            return View(_db.Bookings.ToList());
+        }
     }
 }

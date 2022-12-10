@@ -17,6 +17,7 @@ namespace CabManagementSystem.Migrations
                     RegistrationNo = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LicenceNo = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CabName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CarModel = table.Column<int>(type: "int", nullable: false),
                     DriverId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
